@@ -106,32 +106,34 @@ export const varIncidentSchema = z.object({
 });
 
 export const matchSchema = z.object({
-  id: z.string().min(1),
+    id: z.string().min(1),
 
-  title: z.string().min(1),
+    title: z.string().min(1),
 
-  date: z
-    .string()
-    .regex(
-      /^\d{4}-\d{2}-\d{2}$/,
-      "Date must use YYYY-MM-DD format"
-    ),
+    date: z
+        .string()
+        .regex(
+            /^\d{4}-\d{2}-\d{2}$/,
+            "Date must use YYYY-MM-DD format"
+        ),
 
-  competition: z.string().min(1),
+    competition: z.string().min(1),
 
-  stage: z.string().min(1).optional(),
+    stage: z.string().min(1).optional(),
 
-  homeTeam: z.string().min(1),
+    venue: z.string().min(1).optional(),
 
-  awayTeam: z.string().min(1),
+    homeTeam: z.string().min(1),
 
-  result: matchResultSchema,
+    awayTeam: z.string().min(1),
 
-  stats: matchStatsSchema,
+    result: matchResultSchema,
 
-  timeline: z.array(timelineEventSchema),
+    stats: matchStatsSchema,
 
-  varIncidents: z.array(varIncidentSchema),
+    timeline: z.array(timelineEventSchema),
+
+    varIncidents: z.array(varIncidentSchema),
 });
 
 // Granite output schemas

@@ -110,6 +110,8 @@ export interface Match {
 
   stage?: string;
 
+  venue?: string;
+
   homeTeam: string;
 
   awayTeam: string;
