@@ -1,165 +1,385 @@
-{
-    "id": "argentina-france-2022-final",
-    "title": "Argentina vs France",
-    "date": "2022-12-18",
-    "competition": "FIFA World Cup 2022",
-    "stage": "Final",
-    "venue": "Lusail Stadium",
-    "homeTeam": "Argentina",
-    "awayTeam": "France",
-    "result": {
-        "homeGoals": 3,
-        "awayGoals": 3,
-        "winner": "home",
-        "method": "penalties"
+[
+    {
+        "id": "argentina-france-2022-final",
+        "title": "Argentina vs France",
+        "date": "2022-12-18",
+        "competition": "FIFA World Cup 2022",
+        "stage": "Final",
+        "venue": "Lusail Stadium",
+        "homeTeam": "Argentina",
+        "awayTeam": "France",
+        "result": {
+            "homeGoals": 3,
+            "awayGoals": 3,
+            "winner": "home",
+            "method": "penalties"
+        },
+        "stats": {
+            "possession": {
+                "home": 54,
+                "away": 46
+            },
+            "shots": {
+                "home": 20,
+                "away": 10
+            },
+            "shotsOnTarget": {
+                "home": 10,
+                "away": 5
+            },
+            "xg": {
+                "home": 3.4,
+                "away": 2.3
+            },
+            "passes": {
+                "home": 684,
+                "away": 582
+            },
+            "passAccuracy": {
+                "home": 87,
+                "away": 84
+            },
+            "pressingIntensity": {
+                "home": "HIGH",
+                "away": "MEDIUM"
+            },
+            "defensiveLine": {
+                "home": "Medium-High",
+                "away": "Medium"
+            }
+        },
+        "timeline": [
+            {
+                "minute": 23,
+                "event": "penalty",
+                "team": "Argentina",
+                "player": "Lionel Messi",
+                "description": "Messi converts a penalty after Di Maria is fouled by Dembele."
+            },
+            {
+                "minute": 36,
+                "event": "goal",
+                "team": "Argentina",
+                "player": "Angel Di Maria",
+                "description": "Di Maria finishes a sweeping counterattack to make it 2-0."
+            },
+            {
+                "minute": 41,
+                "event": "substitution",
+                "team": "France",
+                "player": "Marcus Thuram",
+                "description": "Thuram replaces Olivier Giroud in a tactical change."
+            },
+            {
+                "minute": 41,
+                "event": "substitution",
+                "team": "France",
+                "player": "Randal Kolo Muani",
+                "description": "Kolo Muani replaces Ousmane Dembele."
+            },
+            {
+                "minute": 71,
+                "event": "substitution",
+                "team": "France",
+                "player": "Kingsley Coman",
+                "description": "Coman replaces Antoine Griezmann as France increases attacking intensity."
+            },
+            {
+                "minute": 71,
+                "event": "substitution",
+                "team": "France",
+                "player": "Eduardo Camavinga",
+                "description": "Camavinga replaces Theo Hernandez in a tactical reshuffle."
+            },
+            {
+                "minute": 80,
+                "event": "penalty",
+                "team": "France",
+                "player": "Kylian Mbappe",
+                "description": "Mbappe scores from the penalty spot after Kolo Muani is fouled."
+            },
+            {
+                "minute": 81,
+                "event": "goal",
+                "team": "France",
+                "player": "Kylian Mbappe",
+                "description": "Mbappe scores a volley to equalize within two minutes."
+            },
+            {
+                "minute": 91,
+                "event": "yellow_card",
+                "team": "Argentina",
+                "player": "Marcos Acuna",
+                "description": "Booked for a tactical foul."
+            },
+            {
+                "minute": 109,
+                "event": "goal",
+                "team": "Argentina",
+                "player": "Lionel Messi",
+                "description": "Messi scores from close range after a rebound in extra time."
+            },
+            {
+                "minute": 118,
+                "event": "penalty",
+                "team": "France",
+                "player": "Kylian Mbappe",
+                "description": "Mbappe completes his hat-trick with a penalty."
+            },
+            {
+                "minute": 120,
+                "event": "var_review",
+                "team": "France",
+                "player": "Randal Kolo Muani",
+                "description": "Late attacking sequence reviewed before play resumes."
+            }
+        ],
+        "varIncidents": [
+            {
+                "id": "af2022-var-1",
+                "minute": 23,
+                "type": "penalty_review",
+                "decision": "Penalty awarded to Argentina",
+                "ruleApplied": "Careless trip inside the penalty area",
+                "overturned": false,
+                "explanationContext": "Dembele made contact with Di Maria inside the box and the referee awarded a penalty."
+            },
+            {
+                "id": "af2022-var-2",
+                "minute": 80,
+                "type": "penalty_review",
+                "decision": "Penalty awarded to France",
+                "ruleApplied": "Foul denying an attacking action inside the penalty area",
+                "overturned": false,
+                "explanationContext": "Otamendi fouled Kolo Muani while attempting to recover possession."
+            },
+            {
+                "id": "af2022-var-3",
+                "minute": 118,
+                "type": "penalty_review",
+                "decision": "Penalty awarded to France",
+                "ruleApplied": "Handball by defender inside the penalty area",
+                "overturned": false,
+                "explanationContext": "Gonzalo Montiel's arm blocked Mbappe's shot inside the penalty area, resulting in a penalty awarded to France."
+            }
+        ]
     },
-    "stats": {
-        "possession": {
-            "home": 54,
-            "away": 46
+    {
+        "id": "germany-brazil-2014-semi",
+        "title": "Brazil vs Germany",
+        "date": "2014-07-08",
+        "competition": "FIFA World Cup 2014",
+        "stage": "Semi-final",
+        "venue": "Mineirão",
+        "homeTeam": "Brazil",
+        "awayTeam": "Germany",
+        "result": {
+            "homeGoals": 1,
+            "awayGoals": 7,
+            "winner": "away",
+            "method": "regular_time"
         },
-        "shots": {
-            "home": 20,
-            "away": 10
+        "stats": {
+            "possession": {
+                "home": 52,
+                "away": 48
+            },
+            "shots": {
+                "home": 18,
+                "away": 14
+            },
+            "shotsOnTarget": {
+                "home": 13,
+                "away": 10
+            },
+            "xg": {
+                "home": 1.4,
+                "away": 3.3
+            },
+            "passes": {
+                "home": 560,
+                "away": 533
+            },
+            "passAccuracy": {
+                "home": 84,
+                "away": 86
+            },
+            "pressingIntensity": {
+                "home": "HIGH",
+                "away": "MEDIUM"
+            },
+            "defensiveLine": {
+                "home": "HIGH",
+                "away": "MEDIUM"
+            }
         },
-        "shotsOnTarget": {
-            "home": 10,
-            "away": 5
-        },
-        "xg": {
-            "home": 3.4,
-            "away": 2.3
-        },
-        "passes": {
-            "home": 684,
-            "away": 582
-        },
-        "passAccuracy": {
-            "home": 87,
-            "away": 84
-        },
-        "pressingIntensity": {
-            "home": "HIGH",
-            "away": "MEDIUM"
-        },
-        "defensiveLine": {
-            "home": "Medium-High",
-            "away": "Medium"
-        }
+        "timeline": [
+            {
+                "minute": 11,
+                "event": "goal",
+                "team": "Germany",
+                "player": "Thomas Müller",
+                "description": "Müller scores from a corner after losing his marker inside the penalty area."
+            },
+            {
+                "minute": 23,
+                "event": "goal",
+                "team": "Germany",
+                "player": "Miroslav Klose",
+                "description": "Klose scores after Júlio César saves the initial attempt, becoming the all-time World Cup top scorer."
+            },
+            {
+                "minute": 24,
+                "event": "goal",
+                "team": "Germany",
+                "player": "Toni Kroos",
+                "description": "Kroos finishes a quick passing move immediately after Brazil restart."
+            },
+            {
+                "minute": 26,
+                "event": "goal",
+                "team": "Germany",
+                "player": "Toni Kroos",
+                "description": "Kroos capitalizes on a Brazilian midfield error to score again."
+            },
+            {
+                "minute": 29,
+                "event": "goal",
+                "team": "Germany",
+                "player": "Sami Khedira",
+                "description": "Germany complete a devastating team move to make it 5-0."
+            },
+            {
+                "minute": 46,
+                "event": "substitution",
+                "team": "Brazil",
+                "player": "Paulinho",
+                "description": "Paulinho replaces Fernandinho as Brazil attempt to stabilize midfield control."
+            },
+            {
+                "minute": 58,
+                "event": "yellow_card",
+                "team": "Brazil",
+                "player": "David Luiz",
+                "description": "Booked after a late challenge while trying to stop another German attack."
+            },
+            {
+                "minute": 69,
+                "event": "goal",
+                "team": "Germany",
+                "player": "André Schürrle",
+                "description": "Schürrle scores from close range after Lahm's delivery across the box."
+            },
+            {
+                "minute": 79,
+                "event": "goal",
+                "team": "Germany",
+                "player": "André Schürrle",
+                "description": "Schürrle scores a powerful finish into the top corner to make it 7-0."
+            },
+            {
+                "minute": 90,
+                "event": "goal",
+                "team": "Brazil",
+                "player": "Oscar",
+                "description": "Oscar scores a late consolation goal in stoppage time."
+            }
+        ],
+        "varIncidents": []
     },
-    "timeline": [
-        {
-            "minute": 23,
-            "event": "penalty",
-            "team": "Argentina",
-            "player": "Lionel Messi",
-            "description": "Messi converts a penalty after Di Maria is fouled by Dembele."
+    {
+        "id": "morocco-portugal-2022-quarter",
+        "title": "Morocco vs Portugal",
+        "date": "2022-12-10",
+        "competition": "FIFA World Cup 2022",
+        "stage": "Quarter-final",
+        "venue": "Al Thumama Stadium",
+        "homeTeam": "Morocco",
+        "awayTeam": "Portugal",
+        "result": {
+            "homeGoals": 1,
+            "awayGoals": 0,
+            "winner": "home",
+            "method": "regular_time"
         },
-        {
-            "minute": 36,
-            "event": "goal",
-            "team": "Argentina",
-            "player": "Angel Di Maria",
-            "description": "Di Maria finishes a sweeping counterattack to make it 2-0."
+        "stats": {
+            "possession": {
+                "home": 27,
+                "away": 73
+            },
+            "shots": {
+                "home": 9,
+                "away": 12
+            },
+            "shotsOnTarget": {
+                "home": 3,
+                "away": 3
+            },
+            "xg": {
+                "home": 1.2,
+                "away": 0.9
+            },
+            "passes": {
+                "home": 304,
+                "away": 768
+            },
+            "passAccuracy": {
+                "home": 70,
+                "away": 90
+            },
+            "pressingIntensity": {
+                "home": "MEDIUM",
+                "away": "HIGH"
+            },
+            "defensiveLine": {
+                "home": "LOW",
+                "away": "HIGH"
+            }
         },
-        {
-            "minute": 41,
-            "event": "substitution",
-            "team": "France",
-            "player": "Marcus Thuram",
-            "description": "Thuram replaces Olivier Giroud in a tactical change."
-        },
-        {
-            "minute": 41,
-            "event": "substitution",
-            "team": "France",
-            "player": "Randal Kolo Muani",
-            "description": "Kolo Muani replaces Ousmane Dembele."
-        },
-        {
-            "minute": 71,
-            "event": "substitution",
-            "team": "France",
-            "player": "Kingsley Coman",
-            "description": "Coman replaces Antoine Griezmann as France increases attacking intensity."
-        },
-        {
-            "minute": 71,
-            "event": "substitution",
-            "team": "France",
-            "player": "Eduardo Camavinga",
-            "description": "Camavinga replaces Theo Hernandez in a tactical reshuffle."
-        },
-        {
-            "minute": 80,
-            "event": "penalty",
-            "team": "France",
-            "player": "Kylian Mbappe",
-            "description": "Mbappe scores from the penalty spot after Kolo Muani is fouled."
-        },
-        {
-            "minute": 81,
-            "event": "goal",
-            "team": "France",
-            "player": "Kylian Mbappe",
-            "description": "Mbappe scores a volley to equalize within two minutes."
-        },
-        {
-            "minute": 91,
-            "event": "yellow_card",
-            "team": "Argentina",
-            "player": "Marcos Acuna",
-            "description": "Booked for a tactical foul."
-        },
-        {
-            "minute": 109,
-            "event": "goal",
-            "team": "Argentina",
-            "player": "Lionel Messi",
-            "description": "Messi scores from close range after a rebound in extra time."
-        },
-        {
-            "minute": 118,
-            "event": "penalty",
-            "team": "France",
-            "player": "Kylian Mbappe",
-            "description": "Mbappe completes his hat-trick with a penalty."
-        },
-        {
-            "minute": 120,
-            "event": "var_review",
-            "team": "France",
-            "player": "Randal Kolo Muani",
-            "description": "Late attacking sequence reviewed before play resumes."
-        }
-    ],
-    "varIncidents": [
-        {
-            "id": "af2022-var-1",
-            "minute": 23,
-            "type": "penalty_review",
-            "decision": "Penalty awarded to Argentina",
-            "ruleApplied": "Careless trip inside the penalty area",
-            "overturned": false,
-            "explanationContext": "Dembele made contact with Di Maria inside the box and the referee awarded a penalty."
-        },
-        {
-            "id": "af2022-var-2",
-            "minute": 80,
-            "type": "penalty_review",
-            "decision": "Penalty awarded to France",
-            "ruleApplied": "Foul denying an attacking action inside the penalty area",
-            "overturned": false,
-            "explanationContext": "Otamendi fouled Kolo Muani while attempting to recover possession."
-        },
-        {
-            "id": "af2022-var-3",
-            "minute": 118,
-            "type": "penalty_review",
-            "decision": "Penalty awarded to France",
-            "ruleApplied": "Handball by defender inside the penalty area",
-            "overturned": false,
-            "explanationContext": "Gonzalo Montiel's arm blocked Mbappe's shot inside the penalty area, resulting in a penalty awarded to France."
-        }
-    ]
-}
+        "timeline": [
+            {
+                "minute": 42,
+                "event": "goal",
+                "team": "Morocco",
+                "player": "Youssef En-Nesyri",
+                "description": "En-Nesyri rises above the defense to head Morocco into the lead from Attiat-Allah's cross."
+            },
+            {
+                "minute": 51,
+                "event": "yellow_card",
+                "team": "Morocco",
+                "player": "Sofyan Amrabat",
+                "description": "Booked after breaking up a Portuguese counterattack."
+            },
+            {
+                "minute": 51,
+                "event": "substitution",
+                "team": "Portugal",
+                "player": "Cristiano Ronaldo",
+                "description": "Ronaldo replaces Rúben Neves as Portugal increase attacking pressure."
+            },
+            {
+                "minute": 69,
+                "event": "substitution",
+                "team": "Portugal",
+                "player": "Rafael Leão",
+                "description": "Leão replaces João Félix as Portugal search for an equalizer."
+            },
+            {
+                "minute": 82,
+                "event": "yellow_card",
+                "team": "Morocco",
+                "player": "Walid Cheddira",
+                "description": "Booked shortly after entering the match."
+            },
+            {
+                "minute": 90,
+                "event": "red_card",
+                "team": "Morocco",
+                "player": "Walid Cheddira",
+                "description": "Sent off after receiving a second yellow card in stoppage time."
+            }
+        ],
+        "varIncidents": []
+    }
+]

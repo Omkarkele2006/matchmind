@@ -120,7 +120,9 @@ export const VAR_INCIDENT_TYPES = [
   "handball",
   "foul",
   "penalty_awarded",
-  "goal_disallowed"
+  "goal_disallowed",
+  "penalty_review",
+  "red_card_review",
 ] as const;
 
 
