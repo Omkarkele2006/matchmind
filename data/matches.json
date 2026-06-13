@@ -1,0 +1,165 @@
+{
+    "id": "argentina-france-2022-final",
+    "title": "Argentina vs France",
+    "date": "2022-12-18",
+    "competition": "FIFA World Cup 2022",
+    "stage": "Final",
+    "venue": "Lusail Stadium",
+    "homeTeam": "Argentina",
+    "awayTeam": "France",
+    "result": {
+        "homeGoals": 3,
+        "awayGoals": 3,
+        "winner": "home",
+        "method": "penalties"
+    },
+    "stats": {
+        "possession": {
+            "home": 54,
+            "away": 46
+        },
+        "shots": {
+            "home": 20,
+            "away": 10
+        },
+        "shotsOnTarget": {
+            "home": 10,
+            "away": 5
+        },
+        "xg": {
+            "home": 3.4,
+            "away": 2.3
+        },
+        "passes": {
+            "home": 684,
+            "away": 582
+        },
+        "passAccuracy": {
+            "home": 87,
+            "away": 84
+        },
+        "pressingIntensity": {
+            "home": "HIGH",
+            "away": "MEDIUM"
+        },
+        "defensiveLine": {
+            "home": "Medium-High",
+            "away": "Medium"
+        }
+    },
+    "timeline": [
+        {
+            "minute": 23,
+            "event": "penalty",
+            "team": "Argentina",
+            "player": "Lionel Messi",
+            "description": "Messi converts a penalty after Di Maria is fouled by Dembele."
+        },
+        {
+            "minute": 36,
+            "event": "goal",
+            "team": "Argentina",
+            "player": "Angel Di Maria",
+            "description": "Di Maria finishes a sweeping counterattack to make it 2-0."
+        },
+        {
+            "minute": 41,
+            "event": "substitution",
+            "team": "France",
+            "player": "Marcus Thuram",
+            "description": "Thuram replaces Olivier Giroud in a tactical change."
+        },
+        {
+            "minute": 41,
+            "event": "substitution",
+            "team": "France",
+            "player": "Randal Kolo Muani",
+            "description": "Kolo Muani replaces Ousmane Dembele."
+        },
+        {
+            "minute": 71,
+            "event": "substitution",
+            "team": "France",
+            "player": "Kingsley Coman",
+            "description": "Coman replaces Antoine Griezmann as France increases attacking intensity."
+        },
+        {
+            "minute": 71,
+            "event": "substitution",
+            "team": "France",
+            "player": "Eduardo Camavinga",
+            "description": "Camavinga replaces Theo Hernandez in a tactical reshuffle."
+        },
+        {
+            "minute": 80,
+            "event": "penalty",
+            "team": "France",
+            "player": "Kylian Mbappe",
+            "description": "Mbappe scores from the penalty spot after Kolo Muani is fouled."
+        },
+        {
+            "minute": 81,
+            "event": "goal",
+            "team": "France",
+            "player": "Kylian Mbappe",
+            "description": "Mbappe scores a volley to equalize within two minutes."
+        },
+        {
+            "minute": 91,
+            "event": "yellow_card",
+            "team": "Argentina",
+            "player": "Marcos Acuna",
+            "description": "Booked for a tactical foul."
+        },
+        {
+            "minute": 109,
+            "event": "goal",
+            "team": "Argentina",
+            "player": "Lionel Messi",
+            "description": "Messi scores from close range after a rebound in extra time."
+        },
+        {
+            "minute": 118,
+            "event": "penalty",
+            "team": "France",
+            "player": "Kylian Mbappe",
+            "description": "Mbappe completes his hat-trick with a penalty."
+        },
+        {
+            "minute": 120,
+            "event": "var_review",
+            "team": "France",
+            "player": "Randal Kolo Muani",
+            "description": "Late attacking sequence reviewed before play resumes."
+        }
+    ],
+    "varIncidents": [
+        {
+            "id": "af2022-var-1",
+            "minute": 23,
+            "type": "penalty_review",
+            "decision": "Penalty awarded to Argentina",
+            "ruleApplied": "Careless trip inside the penalty area",
+            "overturned": false,
+            "explanationContext": "Dembele made contact with Di Maria inside the box and the referee awarded a penalty."
+        },
+        {
+            "id": "af2022-var-2",
+            "minute": 80,
+            "type": "penalty_review",
+            "decision": "Penalty awarded to France",
+            "ruleApplied": "Foul denying an attacking action inside the penalty area",
+            "overturned": false,
+            "explanationContext": "Otamendi fouled Kolo Muani while attempting to recover possession."
+        },
+        {
+            "id": "af2022-var-3",
+            "minute": 118,
+            "type": "penalty_review",
+            "decision": "Penalty awarded to France",
+            "ruleApplied": "Handball by defender inside the penalty area",
+            "overturned": false,
+            "explanationContext": "Gonzalo Montiel's arm blocked Mbappe's shot inside the penalty area, resulting in a penalty awarded to France."
+        }
+    ]
+}
