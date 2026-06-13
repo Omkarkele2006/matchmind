@@ -1,6 +1,9 @@
 
 // Match Domain Types
-
+export type ConfidenceLevel =
+  | "HIGH"
+  | "MEDIUM"
+  | "LOW";
 export type PressingLevel =
     | "LOW"
     | "MEDIUM"
@@ -165,7 +168,7 @@ export interface VarExplanation {
 
     reviewReason: string;
 
-    confidenceLevel: "HIGH" | "MEDIUM" | "LOW";
+    confidenceLevel: ConfidenceLevel;
 
     confidenceReason: string;
 }
