@@ -186,3 +186,9 @@ export interface VarComparison {
 
     reasoning: string;
 }
+
+//future placeholder for granite.ts
+export interface GraniteMessage {
+  role: "system" | "user";
+  content: string;
+}
