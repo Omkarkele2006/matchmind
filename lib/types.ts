@@ -99,24 +99,28 @@ export interface VarIncident {
 }
 
 export interface Match {
-    id: string;
+  id: string;
 
-    title: string;
+  title: string;
 
-    // ISO format YYYY-MM-DD
-    date: string;
+  // ISO format YYYY-MM-DD
+  date: string;
 
-    homeTeam: string;
+  competition: string;
 
-    awayTeam: string;
+  stage?: string;
 
-    result: MatchResult;
+  homeTeam: string;
 
-    stats: MatchStats;
+  awayTeam: string;
 
-    timeline: TimelineEvent[];
+  result: MatchResult;
 
-    varIncidents: VarIncident[];
+  stats: MatchStats;
+
+  timeline: TimelineEvent[];
+
+  varIncidents: VarIncident[];
 }
 
 

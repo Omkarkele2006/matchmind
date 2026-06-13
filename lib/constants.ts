@@ -16,7 +16,11 @@ export const HIGH_CONFIDENCE_THRESHOLD = 0.85;
 
 export const MEDIUM_CONFIDENCE_THRESHOLD = 0.6;
 
-
+export const CONFIDENCE_LEVELS = [
+  "HIGH",
+  "MEDIUM",
+  "LOW",
+] as const;
 // Misconception Registry
 
 
