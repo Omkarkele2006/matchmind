@@ -1,60 +1,63 @@
 
 // Match Domain Types
 
-
+export type PressingLevel =
+    | "LOW"
+    | "MEDIUM"
+    | "HIGH";
 export interface MatchResult {
-  homeGoals: number;
-  awayGoals: number;
-  winner: string;
-  method?: "regular_time" | "extra_time" | "penalties";
+    homeGoals: number;
+    awayGoals: number;
+    winner: "home" | "away" | "draw";
+    method?: "regular_time" | "extra_time" | "penalties";
 }
 
 export interface MatchStats {
-  possession: {
-    home: number;
-    away: number;
-  };
+    possession: {
+        home: number;
+        away: number;
+    };
 
-  shots: {
-    home: number;
-    away: number;
-  };
+    shots: {
+        home: number;
+        away: number;
+    };
 
-  shotsOnTarget: {
-    home: number;
-    away: number;
-  };
+    shotsOnTarget: {
+        home: number;
+        away: number;
+    };
 
-  xg: {
-    home: number;
-    away: number;
-  };
+    xg: {
+        home: number;
+        away: number;
+    };
 
-  passes: {
-    home: number;
-    away: number;
-  };
+    passes: {
+        home: number;
+        away: number;
+    };
 
-  passAccuracy: {
-    home: number;
-    away: number;
-  };
+    passAccuracy: {
+        home: number;
+        away: number;
+    };
 
-  pressingIntensity?: {
-    home: string;
-    away: string;
-  };
+    pressingIntensity?: {
+        home: PressingLevel;
+        away: PressingLevel;
+    };
 
-  defensiveLine?: {
-    home: string;
-    away: string;
-  };
+    defensiveLine?: {
+        home: string;
+        away: string;
+    };
 }
 
 export interface TimelineEvent {
-  minute: number;
+    minute: number;
 
-  event:
+    event:
     | "goal"
     | "yellow_card"
     | "red_card"
@@ -62,52 +65,55 @@ export interface TimelineEvent {
     | "penalty"
     | "var_review";
 
-  team: string;
+    team: string;
 
-  description?: string;
+    description?: string;
 
-  player?: string;
+    player?: string;
 }
 
 export interface VarIncident {
-  id: string;
+    id: string;
 
-  minute: number;
+    minute: number;
 
-  type:
+    type:
     | "offside"
     | "handball"
     | "foul"
     | "penalty_awarded"
-    | "goal_disallowed";
+    | "goal_disallowed"
+    | "penalty_review"
+    | "red_card_review";
 
-  decision: string;
+    decision: string;
 
-  ruleApplied: string;
+    ruleApplied: string;
 
-  overturned: boolean;
+    overturned: boolean;
 
-  explanationContext: string;
+    explanationContext: string;
 }
 
 export interface Match {
-  id: string;
+    id: string;
 
-  title: string;
+    title: string;
 
-  date: string;
+    // ISO format YYYY-MM-DD
+    date: string;
 
-  homeTeam: string;
+    homeTeam: string;
 
-  awayTeam: string;
+    awayTeam: string;
 
-  result: MatchResult;
+    result: MatchResult;
 
-  stats: MatchStats;
+    stats: MatchStats;
 
-  timeline: TimelineEvent[];
+    timeline: TimelineEvent[];
 
-  varIncidents: VarIncident[];
+    varIncidents: VarIncident[];
 }
 
 
@@ -115,24 +121,25 @@ export interface Match {
 
 
 export type MisconceptionType =
-  | "POSSESSION_EQUALS_CONTROL"
-  | "MORE_SHOTS_EQUALS_BETTER_TEAM"
-  | "HIGH_XG_GUARANTEES_WIN"
-  | "LOSING_TEAM_IS_ALWAYS_WORSE"
-  | "SUBSTITUTION_CAUSED_LOSS"
-  | "OFFSIDE_IS_JUST_BEING_AHEAD"
-  | "MORE_PASSES_EQUALS_BETTER_PLAY"
-  | "HIGH_PRESS_ALWAYS_WINS"
-  | "NONE";
+    | "POSSESSION_EQUALS_CONTROL"
+    | "MORE_SHOTS_EQUALS_BETTER_TEAM"
+    | "HIGH_XG_GUARANTEES_WIN"
+    | "LOSING_TEAM_IS_ALWAYS_WORSE"
+    | "SUBSTITUTION_CAUSED_LOSS"
+    | "OFFSIDE_IS_JUST_BEING_AHEAD"
+    | "MORE_PASSES_EQUALS_BETTER_PLAY"
+    | "HIGH_PRESS_ALWAYS_WINS"
+    | "NONE";
 
 export interface MisconceptionClassifierResponse {
-  misconceptionDetected: boolean;
+    misconceptionDetected: boolean;
 
-  misconceptionType: MisconceptionType;
+    misconceptionType: MisconceptionType;
 
-  confidence: number;
+    // 0.0 - 1.0
+    confidence: number;
 
-  userBelief: string;
+    userBelief: string;
 }
 
 
@@ -140,11 +147,11 @@ export interface MisconceptionClassifierResponse {
 
 
 export interface TacticalExplanation {
-  verdict: string;
+    verdict: string;
 
-  causalFactors: string[];
+    causalFactors: string[];
 
-  hiddenInsight: string;
+    hiddenInsight: string;
 }
 
 
@@ -152,15 +159,15 @@ export interface TacticalExplanation {
 
 
 export interface VarExplanation {
-  lawApplied: string;
+    lawApplied: string;
 
-  decisionLogic: string[];
+    decisionLogic: string[];
 
-  reviewReason: string;
+    reviewReason: string;
 
-  confidenceLevel: "HIGH" | "MEDIUM" | "LOW";
+    confidenceLevel: "HIGH" | "MEDIUM" | "LOW";
 
-  confidenceReason: string;
+    confidenceReason: string;
 }
 
 
@@ -168,11 +175,11 @@ export interface VarExplanation {
 
 
 export interface VarComparison {
-  firstIncident: VarIncident;
+    firstIncident: VarIncident;
 
-  secondIncident: VarIncident;
+    secondIncident: VarIncident;
 
-  consistencyVerdict: string;
+    consistencyVerdict: string;
 
-  reasoning: string;
+    reasoning: string;
 }
