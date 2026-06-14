@@ -151,4 +151,52 @@ export const MISCONCEPTION_KNOWLEDGE: Record<
       "Manchester City vs Real Madrid (various matches)",
     ],
   },
+
+  CORNERS_EQUAL_DOMINANCE: {
+    id: "CORNERS_EQUAL_DOMINANCE",
+
+    title: "Corner Count Isn't a Dominance Metric",
+
+    explanation:
+      "Corners often come from blocked crosses and deflected shots — signs of defensive resistance, not attacking superiority.",
+
+    correction:
+      "Corner volume rarely correlates with winning probability. The conversion rate of corners is low (around 2–3%).",
+
+    exampleMatches: [
+      "Arsenal vs Brighton (2023)",
+    ],
+  },
+
+  SHOTS_ON_TARGET_EQUALS_QUALITY: {
+    id: "SHOTS_ON_TARGET_EQUALS_QUALITY",
+
+    title: "Shots on Target Are Not Always High Quality",
+
+    explanation:
+      "A shot on target can be a weak shot straight at the goalkeeper, which is easy to handle, whereas a shot off target might have been a better opportunity.",
+
+    correction:
+      "Shot quality (xG) is a better predictor of goals than shot volume or shots on target, which ignores goalkeeper pressure and shot difficulty.",
+
+    exampleMatches: [
+      "Bayern vs Villarreal (2022 UCL QF)",
+    ],
+  },
+
+  STAR_PLAYER_EQUALS_VICTORY: {
+    id: "STAR_PLAYER_EQUALS_VICTORY",
+
+    title: "A Star Player Does Not Guarantee Success",
+
+    explanation:
+      "Having the best player on the pitch does not guarantee winning because football is a system game where collective coordination is more important.",
+
+    correction:
+      "Cohesion, tactical alignment, and pressing systems can neutralize individual stars.",
+
+    exampleMatches: [
+      "Argentina vs Saudi Arabia (2022)",
+    ],
+  },
 };

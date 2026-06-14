@@ -108,6 +108,33 @@ export const MISCONCEPTIONS: Record<
       "Aggressive pressing is only one tactical approach.",
     educationalCorrection:
       "Successful teams balance pressing, defensive structure, transitions, and game-state management."
+  },
+
+  CORNERS_EQUAL_DOMINANCE: {
+    id: "CORNERS_EQUAL_DOMINANCE",
+    title: "Corner Count Isn't a Dominance Metric",
+    shortDescription:
+      "Corners often reflect defensive resistance, not offensive dominance.",
+    educationalCorrection:
+      "Corner volume rarely correlates with winning probability. The conversion rate of corners is low (around 2–3%)."
+  },
+
+  SHOTS_ON_TARGET_EQUALS_QUALITY: {
+    id: "SHOTS_ON_TARGET_EQUALS_QUALITY",
+    title: "Shots on Target Are Not Always High Quality",
+    shortDescription:
+      "A shot on target can be low-quality and easily saved.",
+    educationalCorrection:
+      "Shot quality (xG) is a better predictor of goals than shot volume or shots on target, which ignores goalkeeper pressure and shot difficulty."
+  },
+
+  STAR_PLAYER_EQUALS_VICTORY: {
+    id: "STAR_PLAYER_EQUALS_VICTORY",
+    title: "A Star Player Does Not Guarantee Success",
+    shortDescription:
+      "Football is an 11-vs-11 system game.",
+    educationalCorrection:
+      "Cohesion, tactical alignment, and pressing systems can neutralize individual stars."
   }
 };
 

@@ -138,6 +138,9 @@ export type MisconceptionType =
     | "OFFSIDE_IS_JUST_BEING_AHEAD"
     | "MORE_PASSES_EQUALS_BETTER_PLAY"
     | "HIGH_PRESS_ALWAYS_WINS"
+    | "CORNERS_EQUAL_DOMINANCE"
+    | "SHOTS_ON_TARGET_EQUALS_QUALITY"
+    | "STAR_PLAYER_EQUALS_VICTORY"
     | "NONE";
 
 export interface MisconceptionClassifierResponse {
