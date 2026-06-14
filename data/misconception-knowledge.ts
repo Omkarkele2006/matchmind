@@ -1,3 +1,8 @@
+/**
+ * Educational Misconception Knowledge Base.
+ * Hardcoded registry matching backend identifiers with correction scripts and example match links.
+ */
+
 import type { MisconceptionType } from "@/lib/types";
 
 export interface MisconceptionKnowledge {

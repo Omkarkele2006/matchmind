@@ -1,3 +1,8 @@
+/**
+ * API Route: POST /api/detect
+ * Entry point for frontend analysis requests to evaluate football claims.
+ */
+
 import { NextResponse } from "next/server";
 
 import { detectMisconception } from "@/lib/detect-misconception";
@@ -6,6 +11,7 @@ interface DetectRequestBody {
   question?: unknown;
 }
 
+// Handles misconception analysis. Validates request formatting and invokes the classifier.
 export async function POST(
   request: Request
 ) {

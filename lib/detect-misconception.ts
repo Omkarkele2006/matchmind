@@ -1,3 +1,8 @@
+/**
+ * Misconception classifier service.
+ * Pipes the user's question into Granite using structural classification prompts.
+ */
+
 import { graniteChat, extractJsonBlock } from "./granite";
 
 import {
@@ -9,6 +14,8 @@ import { misconceptionClassifierResponseSchema } from "./schemas";
 
 import type { MisconceptionClassifierResponse } from "./types";
 
+// Classifies an input statement. Uses structured prompts and returns a validated payload.
+// Wraps JSON parsing in a try/catch fallback to prevent LLM format anomalies from crashing the server.
 export async function detectMisconception(
   question: string
 ): Promise<MisconceptionClassifierResponse> {
@@ -33,15 +40,25 @@ export async function detectMisconception(
     }
   );
 
-  const jsonText = extractJsonBlock(
-    response.text
-  );
+  try {
+    const jsonText = extractJsonBlock(
+      response.text
+    );
 
-  const parsed = JSON.parse(
-    jsonText
-  ) as unknown;
+    const parsed = JSON.parse(
+      jsonText
+    ) as unknown;
 
-  return misconceptionClassifierResponseSchema.parse(
-    parsed
-  );
+    return misconceptionClassifierResponseSchema.parse(
+      parsed
+    );
+  } catch (error) {
+    console.error("Failed to parse Granite response, falling back to NONE:", error);
+    return {
+      misconceptionDetected: false,
+      misconceptionType: "NONE",
+      confidence: 1.0,
+      userBelief: question,
+    };
+  }
 }

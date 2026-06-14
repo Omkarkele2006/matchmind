@@ -203,6 +203,14 @@ const MISCONCEPTION_CONTENT: Record<
       },
     ],
   },
+  NONE: {
+    title: "Tactically Sound Perspective",
+    whyMisleading:
+      "No major tactical misconception was detected in your statement. Your reasoning aligns well with deep tactical indicators rather than surface-level statistical biases.",
+    deeperReality:
+      "Sound football analysis focuses on match context, chance quality, pressing coordination, and spatial control rather than drawing conclusions from raw numbers alone.",
+    examples: [],
+  },
 };
 
 const FALLBACK_CONTENT = {
@@ -345,6 +353,7 @@ export default function Page() {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={onKey}
+            maxLength={300}
             placeholder="e.g. Portugal had more possession so they were clearly the better team."
             className="min-h-30 w-full resize-none rounded-xl border border-white/10 bg-slate-950/60 p-4 text-base text-slate-100 placeholder:text-slate-500 focus:border-emerald-400/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/20"
           />

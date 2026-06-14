@@ -1,11 +1,17 @@
+/**
+ * Core IBM Watsonx / Granite API Client.
+ * Handles IAM token lifecycle caching, requests execution, timeouts, and retries.
+ */
+
 const IAM_URL =
   "https://iam.cloud.ibm.com/identity/token";
 
 const API_VERSION = "2023-05-29";
 
-const DEFAULT_TIMEOUT_MS = 30_000;
+// Bounded limits suited for Next.js Serverless Functions (10s Vercel Hobby tier)
+const DEFAULT_TIMEOUT_MS = 7_000;
 
-const DEFAULT_MAX_RETRIES = 2;
+const DEFAULT_MAX_RETRIES = 1;
 
 const DEFAULT_MAX_TOKENS = 512;
 
@@ -79,6 +85,8 @@ function getRequiredEnv(
   return value;
 }
 
+// Requests an IAM token using the Watsonx API key and caches it in-memory.
+// Cache is set for 50 minutes to avoid redundant network overhead on every request.
 export async function getIamToken(): Promise<string> {
   const now = Date.now();
 
@@ -150,6 +158,8 @@ function extractAssistantText(
   return text;
 }
 
+// Extracts the first matching JSON block from raw text.
+// Handles cases where the model returns wrapper text or markdown code fences.
 export function extractJsonBlock(
   text: string
 ): string {
@@ -167,6 +177,8 @@ export function extractJsonBlock(
   return match[0];
 }
 
+// Single execution handler for Watsonx Chat completions.
+// Incorporates the custom timeout boundaries, AbortController, and retries.
 export async function graniteChat(
   messages: GraniteMessage[],
 

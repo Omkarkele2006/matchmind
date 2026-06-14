@@ -1,3 +1,8 @@
+/**
+ * Dataset Validator.
+ * Validates the loaded Match JSON structure against domain schemas to catch dataset anomalies early.
+ */
+
 import { z } from "zod";
 
 import { matchSchema } from "@/lib/schemas";

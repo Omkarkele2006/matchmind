@@ -1,3 +1,8 @@
+/**
+ * Central Prompt Registry.
+ * Declares system prompts, output constraints, and template builders for all Granite invocations.
+ */
+
 import { MISCONCEPTION_IDS } from "@/lib/misconceptions";
 
 export const PROMPT_VERSION = "v1";

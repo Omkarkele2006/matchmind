@@ -1,3 +1,8 @@
+/**
+ * Domain Validation Schemas & Inferred Type Guards.
+ * Uses Zod to enforce integrity boundaries on match statistics, timelines, and LLM payloads.
+ */
+
 import { z } from "zod";
 
 import {
@@ -6,7 +11,7 @@ import {
 } from "@/lib/constants";
 import { MISCONCEPTION_IDS } from "@/lib/misconceptions";
 
-// Match schemas
+// Match result validation schemas
 
 export const matchResultSchema = z.object({
     homeGoals: z.number().int().min(0),
