@@ -21,6 +21,8 @@ export async function POST(
 
     const question = body.question;
 
+    // VALIDATION GATEWAY: Performing structural checks on incoming parameters in the controller layer
+    // prevents sending malformed text payloads to Watsonx, minimizing token costs and latency.
     if (
       typeof question !== "string" ||
       question.trim().length === 0

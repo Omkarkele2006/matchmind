@@ -69,6 +69,8 @@ Focus strictly on rules, tactical structure, and objective parameters. Avoid nar
     const parsed = JSON.parse(jsonText);
     return varExplanationSchema.parse(parsed);
   } catch (error) {
+    // DIAGNOSTIC FAIL: Throwing parsing errors allows the routing controller to map
+    // these failures to HTTP error payloads rather than swallowing them silently.
     console.error(`VAR Explainer failed for incident ${incidentId}:`, error);
     throw new Error(`Failed to parse VAR explanation from model: ${error instanceof Error ? error.message : String(error)}`);
   }

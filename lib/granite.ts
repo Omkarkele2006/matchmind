@@ -8,13 +8,18 @@ const IAM_URL =
 
 const API_VERSION = "2023-05-29";
 
-// Bounded limits suited for Next.js Serverless Functions (10s Vercel Hobby tier)
+// Next.js Serverless Functions on Vercel's Hobby tier have a hard 10-second timeout.
+// We set a 7-second limit to allow the client/API route to catch timeout failures 
+// and return structured fallback payloads instead of crash pages.
 const DEFAULT_TIMEOUT_MS = 7_000;
 
 const DEFAULT_MAX_RETRIES = 1;
 
+// Bounded limits designed to reduce API bills and keep responses brief.
 const DEFAULT_MAX_TOKENS = 512;
 
+// Low default temperature (greedy decoding) limits model randomness, 
+// ensuring structure validation succeeds consistently.
 const DEFAULT_TEMPERATURE = 0.2;
 
 export interface GraniteMessage {
@@ -85,8 +90,9 @@ function getRequiredEnv(
   return value;
 }
 
-// Requests an IAM token using the Watsonx API key and caches it in-memory.
-// Cache is set for 50 minutes to avoid redundant network overhead on every request.
+// Watsonx IAM access tokens are valid for 1 hour. We cache them in-memory 
+// for 50 minutes to optimize round-trip network latency on concurrent requests, 
+// leaving a 10-minute safe zone before actual token expiration.
 export async function getIamToken(): Promise<string> {
   const now = Date.now();
 

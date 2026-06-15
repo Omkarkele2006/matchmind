@@ -21,6 +21,8 @@ export async function POST(request: Request) {
     const body = (await request.json()) as ExplainMatchRequestBody;
     const matchId = body.matchId;
 
+    // VALIDATION GATEWAY: Performing structural checks on incoming parameters in the controller layer
+    // prevents sending malformed text payloads to Watsonx, minimizing token costs and latency.
     if (typeof matchId !== "string" || matchId.trim().length === 0) {
       return NextResponse.json(
         {
@@ -34,6 +36,7 @@ export async function POST(request: Request) {
 
     const trimmedMatchId = matchId.trim();
 
+    // ID SANITIZATION: Restricting model inference strictly to historic matches in the dataset.
     if (!ALLOWED_MATCH_IDS.includes(trimmedMatchId)) {
       return NextResponse.json(
         {

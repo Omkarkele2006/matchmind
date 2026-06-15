@@ -63,6 +63,9 @@ Avoid narrative storytelling, emotional explanations, and generic football clich
     const parsed = JSON.parse(jsonText);
     return tacticalExplanationSchema.parse(parsed);
   } catch (error) {
+    // DIAGNOSTIC FAIL: Unlike the misconception detector where 'NONE' is a safe default,
+    // a failed tactical explanation cannot be simplified to a neutral fallback. 
+    // We throw here so the API router can catch it and return a descriptive 500 payload.
     console.error(`Tactical Explainer failed for match ${matchId}:`, error);
     throw new Error(`Failed to parse tactical explanation from model: ${error instanceof Error ? error.message : String(error)}`);
   }

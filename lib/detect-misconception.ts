@@ -53,6 +53,9 @@ export async function detectMisconception(
       parsed
     );
   } catch (error) {
+    // FALLBACK SAFETY: Watsonx completions can occasionally contain formatting anomalies.
+    // Catching exceptions and returning a fallback "NONE" structure ensures the client UI
+    // can render a neutral response gracefully rather than crashing with server error states.
     console.error("Failed to parse Granite response, falling back to NONE:", error);
     return {
       misconceptionDetected: false,
