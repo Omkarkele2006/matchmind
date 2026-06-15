@@ -229,12 +229,52 @@ const EXAMPLE_PROMPTS = [
   "Messi was playing, Argentina had to win that game.",
 ];
 
-const TIMELINE_STEPS = [
-  "Parsing fan statement",
-  "Identifying tactical claim",
-  "Querying IBM Granite reasoning",
-  "Cross-referencing historical matches",
-  "Generating educational response",
+const HOW_IT_WORKS_STEPS = [
+  {
+    title: "Football Opinion",
+    desc: "Submit a tactical take, hot claim, or statistical belief.",
+    icon: (
+      <svg className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+    ),
+  },
+  {
+    title: "IBM Granite 4",
+    desc: "Granite 4 parses the statement's underlying tactical reasoning.",
+    icon: (
+      <svg className="h-5 w-5 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+      </svg>
+    ),
+  },
+  {
+    title: "Misconception Detection",
+    desc: "Identifies over-weighted metrics and superficial biases.",
+    icon: (
+      <svg className="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+    ),
+  },
+  {
+    title: "Educational Correction",
+    desc: "Exposes the fallacy and explains the actual tactical reality.",
+    icon: (
+      <svg className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+      </svg>
+    ),
+  },
+  {
+    title: "Historical Match Evidence",
+    desc: "Backs up the analysis with real-world match examples.",
+    icon: (
+      <svg className="h-5 w-5 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+      </svg>
+    ),
+  },
 ];
 
 function getContent(type: string | null) {
@@ -253,17 +293,8 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<DetectResponse | null>(null);
-  const [activeStep, setActiveStep] = useState(-1);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!loading) return;
-    const interval = setInterval(() => {
-      setActiveStep((s) => (s < TIMELINE_STEPS.length - 1 ? s + 1 : s));
-    }, 450);
-    return () => clearInterval(interval);
-  }, [loading]);
 
   useEffect(() => {
     if (result && resultsRef.current) {
@@ -274,7 +305,6 @@ export default function Page() {
   async function analyze() {
     if (!question.trim() || loading) return;
     setLoading(true);
-    setActiveStep(0);
     setError(null);
     setResult(null);
     try {
@@ -290,7 +320,6 @@ export default function Page() {
       setError(e instanceof Error ? e.message : "Something went wrong analyzing this statement.");
     } finally {
       setLoading(false);
-      setActiveStep(TIMELINE_STEPS.length);
     }
   }
 
@@ -337,7 +366,7 @@ export default function Page() {
             AI Football Misconception Detector
           </div>
           <h1 className="mx-auto max-w-3xl bg-linear-to-b from-white to-slate-400 bg-clip-text text-4xl font-bold leading-tight tracking-tight text-transparent md:text-6xl">
-            Understand why football fans get tactical analysis wrong.
+            Stop arguing with football stats. Start understanding them.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base text-slate-400 md:text-lg">
             MatchMind uses IBM Granite to detect misleading football beliefs and explain the deeper tactical reality behind the numbers.
@@ -390,39 +419,72 @@ export default function Page() {
 
         <section ref={resultsRef} className="mt-10">
           {loading && (
-            <div className="rounded-2xl border border-white/10 bg-white/3 p-8 backdrop-blur-xl">
-              <h3 className="mb-6 text-sm font-medium uppercase tracking-wider text-slate-400">
-                AI Reasoning Timeline
+            <div className="rounded-2xl border border-white/10 bg-white/3 p-8 backdrop-blur-xl flex flex-col items-center text-center">
+              {/* Animated Spinner */}
+              <div className="relative flex h-16 w-16 items-center justify-center mb-6">
+                <div className="absolute inset-0 rounded-full border-4 border-slate-800/50" />
+                <div className="absolute inset-0 rounded-full border-4 border-t-emerald-400 border-r-sky-500 animate-spin" />
+              </div>
+
+              <h3 className="text-xl font-bold tracking-tight text-white md:text-2xl">
+                IBM Granite is analyzing your football belief...
               </h3>
-              <ol className="space-y-4">
-                {TIMELINE_STEPS.map((step, i) => {
-                  const done = i < activeStep;
-                  const active = i === activeStep;
-                  return (
-                    <li key={step} className="flex items-center gap-4">
-                      <div
-                        className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs font-semibold transition ${done
-                            ? "border-emerald-400/50 bg-emerald-400/20 text-emerald-300"
-                            : active
-                              ? "border-sky-400/60 bg-sky-400/20 text-sky-200"
-                              : "border-white/10 bg-white/5 text-slate-500"
-                          }`}
-                      >
-                        {done ? "✓" : i + 1}
-                      </div>
-                      <span
-                        className={`text-sm transition ${done ? "text-slate-300" : active ? "text-white" : "text-slate-500"
-                          }`}
-                      >
-                        {step}
-                      </span>
-                      {active && (
-                        <span className="ml-2 inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-sky-400" />
-                      )}
-                    </li>
-                  );
-                })}
-              </ol>
+              <p className="mt-2 max-w-md text-sm text-slate-400">
+                Detecting misconceptions, validating reasoning, and searching for tactical evidence.
+              </p>
+
+              {/* Progress Steps */}
+              <div className="mt-8 w-full max-w-sm text-left">
+                <div className="rounded-xl border border-white/5 bg-slate-950/40 p-5 space-y-4">
+                  {/* Step 1 */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-sm font-medium text-slate-300">
+                      Opinion received
+                    </span>
+                  </div>
+
+                  {/* Step 2 */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-sm font-medium text-slate-300">
+                      Sending to IBM Granite
+                    </span>
+                  </div>
+
+                  {/* Step 3 */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 animate-pulse">
+                      <svg className="h-3.5 w-3.5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17" />
+                      </svg>
+                    </div>
+                    <span className="text-sm font-medium text-white">
+                      IBM Granite reasoning
+                    </span>
+                  </div>
+
+                  {/* Step 4 */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 animate-pulse">
+                      <svg className="h-3.5 w-3.5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17" />
+                      </svg>
+                    </div>
+                    <span className="text-sm font-medium text-white">
+                      Building educational feedback
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
@@ -507,6 +569,66 @@ export default function Page() {
               )}
             </div>
           )}
+        </section>
+
+        <section className="mt-24">
+          <div className="text-center">
+            <h3 className="text-2xl font-bold tracking-tight md:text-3xl">
+              How MatchMind Works
+            </h3>
+            <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-400">
+              MatchMind uses IBM Granite to identify misleading football beliefs and explain the deeper tactical reality behind them.
+            </p>
+          </div>
+
+          <div className="relative mt-12">
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-5">
+              {HOW_IT_WORKS_STEPS.map((step, i) => (
+                <div
+                  key={step.title}
+                  className="relative flex flex-col items-center text-center p-5 rounded-2xl border border-white/10 bg-white/3 backdrop-blur-xl hover:border-emerald-500/20 hover:bg-white/5 transition duration-300 h-full"
+                >
+                  {/* Step number badge */}
+                  <div className="absolute -top-3 left-4 rounded-full bg-slate-950 border border-white/10 px-2 py-0.5 text-[10px] font-mono font-medium text-slate-400">
+                    0{i + 1}
+                  </div>
+
+                  {/* Icon container */}
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 border border-white/10 shadow-inner">
+                    {step.icon}
+                  </div>
+
+                  {/* Title */}
+                  <h4 className="font-semibold text-sm text-white tracking-tight">
+                    {step.title}
+                  </h4>
+
+                  {/* Description */}
+                  <p className="mt-2 text-xs leading-relaxed text-slate-400">
+                    {step.desc}
+                  </p>
+
+                  {/* Right Arrow on Desktop */}
+                  {i < HOW_IT_WORKS_STEPS.length - 1 && (
+                    <div className="hidden md:flex absolute left-full top-1/2 -translate-y-1/2 w-6 h-6 z-20 items-center justify-center">
+                      <svg className="h-5 w-5 text-slate-600/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  )}
+
+                  {/* Down Arrow on Mobile */}
+                  {i < HOW_IT_WORKS_STEPS.length - 1 && (
+                    <div className="flex md:hidden absolute top-full left-1/2 -translate-x-1/2 w-6 h-6 z-20 items-center justify-center">
+                      <svg className="h-5 w-5 text-slate-600/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="mt-24">
