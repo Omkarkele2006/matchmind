@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect, KeyboardEvent } from "react";
 import Image from "next/image";
+import type { TacticalExplanation } from "@/lib/types";
+
 type DetectResponse = {
   misconceptionDetected: boolean;
   misconceptionType: string | null;
@@ -296,11 +298,45 @@ export default function Page() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
+  // Tactical Explainer MVP States & Refs
+  const [selectedMatchId, setSelectedMatchId] = useState("morocco-portugal-2022-quarter");
+  const [explainLoading, setExplainLoading] = useState(false);
+  const [explainError, setExplainError] = useState<string | null>(null);
+  const [explainResult, setExplainResult] = useState<TacticalExplanation | null>(null);
+  const explainResultsRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (result && resultsRef.current) {
       resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [result]);
+
+  useEffect(() => {
+    if (explainResult && explainResultsRef.current) {
+      explainResultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [explainResult]);
+
+  async function explainMatch() {
+    if (explainLoading) return;
+    setExplainLoading(true);
+    setExplainError(null);
+    setExplainResult(null);
+    try {
+      const res = await fetch("/api/explain-match", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ matchId: selectedMatchId }),
+      });
+      if (!res.ok) throw new Error(`Request failed (${res.status})`);
+      const data = (await res.json()) as TacticalExplanation;
+      setExplainResult(data);
+    } catch (e) {
+      setExplainError(e instanceof Error ? e.message : "Something went wrong analyzing this match.");
+    } finally {
+      setExplainLoading(false);
+    }
+  }
 
   async function analyze() {
     if (!question.trim() || loading) return;
@@ -569,6 +605,179 @@ export default function Page() {
               )}
             </div>
           )}
+        </section>
+
+        {/* Tactical Explainer MVP Section */}
+        <section className="mt-24 border-t border-white/10 pt-20">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">
+              Tactical Explainer
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-base text-slate-400">
+              Understand the deeper tactical reasons behind famous football matches using IBM Granite.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/3 p-6 backdrop-blur-xl md:p-8">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-end justify-between">
+              <div className="flex-1">
+                <label htmlFor="match-select" className="mb-3 block text-sm font-medium text-slate-300 font-sans">
+                  Select a historic match to analyze
+                </label>
+                <select
+                  id="match-select"
+                  value={selectedMatchId}
+                  onChange={(e) => setSelectedMatchId(e.target.value)}
+                  disabled={explainLoading}
+                  className="w-full rounded-xl border border-white/10 bg-slate-950/60 p-4 text-base text-slate-100 focus:border-emerald-400/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <option value="morocco-portugal-2022-quarter">Morocco vs Portugal (2022 Quarter-final)</option>
+                  <option value="germany-brazil-2014-semi">Germany vs Brazil (2014 Semi-final)</option>
+                  <option value="argentina-france-2022-final">Argentina vs France (2022 Final)</option>
+                </select>
+              </div>
+
+              <button
+                onClick={explainMatch}
+                disabled={explainLoading}
+                className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-400 to-sky-500 px-8 py-4 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:shadow-emerald-500/40 disabled:cursor-not-allowed disabled:opacity-50 h-14.5 sm:w-50"
+              >
+                {explainLoading ? "Analyzing…" : "Explain Match"}
+                <svg className="h-4 w-4 transition group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div ref={explainResultsRef} className="mt-10">
+            {explainLoading && (
+              <div className="rounded-2xl border border-white/10 bg-white/3 p-8 backdrop-blur-xl flex flex-col items-center text-center">
+                {/* Animated Spinner */}
+                <div className="relative flex h-16 w-16 items-center justify-center mb-6">
+                  <div className="absolute inset-0 rounded-full border-4 border-slate-800/50" />
+                  <div className="absolute inset-0 rounded-full border-4 border-t-emerald-400 border-r-sky-500 animate-spin" />
+                </div>
+
+                <h3 className="text-xl font-bold tracking-tight text-white md:text-2xl">
+                  IBM Granite is analyzing the match...
+                </h3>
+                <p className="mt-2 max-w-md text-sm text-slate-400">
+                  Extracting tactical factors, reviewing spatial setups, and framing educational lessons.
+                </p>
+
+                {/* Progress Steps */}
+                <div className="mt-8 w-full max-w-sm text-left">
+                  <div className="rounded-xl border border-white/5 bg-slate-950/40 p-5 space-y-4">
+                    {/* Step 1 */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-slate-300">
+                        Match selected
+                      </span>
+                    </div>
+
+                    {/* Step 2 */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-slate-300">
+                        Dataset loaded
+                      </span>
+                    </div>
+
+                    {/* Step 3 */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 animate-pulse">
+                        <svg className="h-3.5 w-3.5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-white">
+                        Evaluating tactical factors
+                      </span>
+                    </div>
+
+                    {/* Step 4 */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 animate-pulse">
+                        <svg className="h-3.5 w-3.5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-white">
+                        Generating tactical lesson
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {explainError && !explainLoading && (
+              <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-6 text-rose-200">
+                <p className="font-medium">Tactical analysis failed</p>
+                <p className="mt-1 text-sm text-rose-300/80">{explainError}</p>
+              </div>
+            )}
+
+            {explainResult && !explainLoading && (
+              <div className="space-y-6">
+                {/* Card 1: Tactical Verdict */}
+                <article className="rounded-2xl border border-white/10 bg-linear-to-br from-white/6 to-white/2 p-6 backdrop-blur-xl md:p-8">
+                  <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-emerald-400 font-sans">
+                    Tactical Verdict
+                  </h3>
+                  <p className="text-lg leading-relaxed text-slate-100 font-medium">
+                    {explainResult.verdict}
+                  </p>
+                </article>
+
+                {/* Card 2: Key Tactical Factors */}
+                <section>
+                  <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-400 font-sans">
+                    Key Tactical Factors
+                  </h3>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    {explainResult.causalFactors.map((factor, idx) => (
+                      <article
+                        key={idx}
+                        className="rounded-2xl border border-white/10 bg-white/3 p-6 backdrop-blur-xl flex gap-4 items-start"
+                      >
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-900 border border-white/10 text-xs font-mono font-semibold text-slate-300">
+                          {idx + 1}
+                        </div>
+                        <p className="text-sm leading-relaxed text-slate-300">
+                          {factor}
+                        </p>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Card 3: Hidden Tactical Insight */}
+                <article className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6 backdrop-blur-xl md:p-8 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 -mr-6 -mt-6 h-24 w-24 rounded-full bg-emerald-400/10 blur-xl pointer-events-none" />
+                  <div className="mb-3 flex items-center gap-2">
+                    <span className="flex h-2 w-2 rounded-full bg-emerald-400" />
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-emerald-300 font-sans">
+                      Hidden Tactical Insight & Lesson
+                    </h3>
+                  </div>
+                  <p className="text-base leading-relaxed text-emerald-100 font-medium italic">
+                    &ldquo;{explainResult.hiddenInsight}&rdquo;
+                  </p>
+                </article>
+              </div>
+            )}
+          </div>
         </section>
 
         <section className="mt-24">
