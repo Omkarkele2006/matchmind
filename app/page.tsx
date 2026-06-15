@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, KeyboardEvent } from "react";
 import Image from "next/image";
-import type { TacticalExplanation } from "@/lib/types";
+import type { TacticalExplanation, VarExplanation } from "@/lib/types";
 
 type DetectResponse = {
   misconceptionDetected: boolean;
@@ -305,6 +305,14 @@ export default function Page() {
   const [explainResult, setExplainResult] = useState<TacticalExplanation | null>(null);
   const explainResultsRef = useRef<HTMLDivElement>(null);
 
+  // VAR Explainer MVP States & Refs
+  const [selectedVarMatchId, setSelectedVarMatchId] = useState("argentina-france-2022-final");
+  const [selectedVarIncidentId, setSelectedVarIncidentId] = useState("af2022-var-3");
+  const [varLoading, setVarLoading] = useState(false);
+  const [varError, setVarError] = useState<string | null>(null);
+  const [varResult, setVarResult] = useState<VarExplanation | null>(null);
+  const varResultsRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (result && resultsRef.current) {
       resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -316,6 +324,12 @@ export default function Page() {
       explainResultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [explainResult]);
+
+  useEffect(() => {
+    if (varResult && varResultsRef.current) {
+      varResultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [varResult]);
 
   async function explainMatch() {
     if (explainLoading) return;
@@ -335,6 +349,30 @@ export default function Page() {
       setExplainError(e instanceof Error ? e.message : "Something went wrong analyzing this match.");
     } finally {
       setExplainLoading(false);
+    }
+  }
+
+  async function explainVarDecision() {
+    if (varLoading) return;
+    setVarLoading(true);
+    setVarError(null);
+    setVarResult(null);
+    try {
+      const res = await fetch("/api/explain-var", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          matchId: selectedVarMatchId,
+          incidentId: selectedVarIncidentId,
+        }),
+      });
+      if (!res.ok) throw new Error(`Request failed (${res.status})`);
+      const data = (await res.json()) as VarExplanation;
+      setVarResult(data);
+    } catch (e) {
+      setVarError(e instanceof Error ? e.message : "Something went wrong analyzing this incident.");
+    } finally {
+      setVarLoading(false);
     }
   }
 
@@ -775,6 +813,257 @@ export default function Page() {
                     &ldquo;{explainResult.hiddenInsight}&rdquo;
                   </p>
                 </article>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* VAR Decision Explainer Section */}
+        <section className="mt-24 border-t border-white/10 pt-20">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">
+              VAR Decision Explainer
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-base text-slate-400">
+              Understand how real football decisions are reviewed and why fans often misunderstand them.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/3 p-6 backdrop-blur-xl md:p-8">
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md:items-end">
+              <div>
+                <label htmlFor="var-match-select" className="mb-3 block text-sm font-medium text-slate-300 font-sans">
+                  Select historic match
+                </label>
+                <select
+                  id="var-match-select"
+                  value={selectedVarMatchId}
+                  onChange={(e) => setSelectedVarMatchId(e.target.value)}
+                  disabled={varLoading}
+                  className="w-full rounded-xl border border-white/10 bg-slate-950/60 p-4 text-base text-slate-100 focus:border-emerald-400/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
+                >
+                  <option value="argentina-france-2022-final">Argentina vs France (2022 Final)</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="var-incident-select" className="mb-3 block text-sm font-medium text-slate-300 font-sans">
+                  Select VAR incident
+                </label>
+                <select
+                  id="var-incident-select"
+                  value={selectedVarIncidentId}
+                  onChange={(e) => setSelectedVarIncidentId(e.target.value)}
+                  disabled={varLoading}
+                  className="w-full rounded-xl border border-white/10 bg-slate-950/60 p-4 text-base text-slate-100 focus:border-emerald-400/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
+                >
+                  <option value="af2022-var-1">Di Maria Penalty</option>
+                  <option value="af2022-var-2">Kolo Muani Penalty</option>
+                  <option value="af2022-var-3">Montiel Handball Penalty</option>
+                </select>
+              </div>
+
+              <button
+                onClick={explainVarDecision}
+                disabled={varLoading}
+                className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-400 to-sky-500 px-8 py-4 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:shadow-emerald-500/40 disabled:cursor-not-allowed disabled:opacity-50 h-14.5 sm:col-span-2 md:col-span-1"
+              >
+                {varLoading ? "Analyzing…" : "Explain VAR Decision"}
+                <svg className="h-4 w-4 transition group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div ref={varResultsRef} className="mt-10">
+            {varLoading && (
+              <div className="rounded-2xl border border-white/10 bg-white/3 p-8 backdrop-blur-xl flex flex-col items-center text-center">
+                {/* Animated Spinner */}
+                <div className="relative flex h-16 w-16 items-center justify-center mb-6">
+                  <div className="absolute inset-0 rounded-full border-4 border-slate-800/50" />
+                  <div className="absolute inset-0 rounded-full border-4 border-t-emerald-400 border-r-sky-500 animate-spin" />
+                </div>
+
+                <h3 className="text-xl font-bold tracking-tight text-white md:text-2xl">
+                  IBM Granite is reviewing the incident...
+                </h3>
+                <p className="mt-2 max-w-md text-sm text-slate-400">
+                  Checking Laws of the Game, evaluating camera alignments, and formatting final decisions.
+                </p>
+
+                {/* Progress Steps */}
+                <div className="mt-8 w-full max-w-sm text-left">
+                  <div className="rounded-xl border border-white/5 bg-slate-950/40 p-5 space-y-4">
+                    {/* Step 1 */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-slate-300">
+                        Incident selected
+                      </span>
+                    </div>
+
+                    {/* Step 2 */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-slate-300">
+                        Match data loaded
+                      </span>
+                    </div>
+
+                    {/* Step 3 */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 animate-pulse">
+                        <svg className="h-3.5 w-3.5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-white">
+                        Evaluating Laws of the Game
+                      </span>
+                    </div>
+
+                    {/* Step 4 */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 animate-pulse">
+                        <svg className="h-3.5 w-3.5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-white">
+                        Building educational explanation
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {varError && !varLoading && (
+              <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-6 text-rose-200">
+                <p className="font-medium">VAR review explanation failed</p>
+                <p className="mt-1 text-sm text-rose-300/80">{varError}</p>
+              </div>
+            )}
+
+            {varResult && !varLoading && (
+              <div className="space-y-6 font-sans">
+                <div className="grid gap-6 md:grid-cols-2">
+                  {/* Card 1: Rule Applied */}
+                  <article className="rounded-2xl border border-white/10 bg-linear-to-br from-white/6 to-white/2 p-6 backdrop-blur-xl md:p-8">
+                    <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+                      Rule Applied
+                    </h3>
+                    <p className="text-base leading-relaxed text-slate-200 font-medium">
+                      {varResult.lawApplied}
+                    </p>
+                  </article>
+
+                  {/* Card 3: Review Reason */}
+                  <article className="rounded-2xl border border-white/10 bg-linear-to-br from-white/6 to-white/2 p-6 backdrop-blur-xl md:p-8">
+                    <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-sky-400">
+                      Review Reason
+                    </h3>
+                    <p className="text-base leading-relaxed text-slate-200 font-medium">
+                      {varResult.reviewReason}
+                    </p>
+                  </article>
+                </div>
+
+                {/* Card 2: Decision Logic */}
+                <section>
+                  <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                    Decision Logic
+                  </h3>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    {varResult.decisionLogic.map((logic, idx) => (
+                      <article
+                        key={idx}
+                        className="rounded-2xl border border-white/10 bg-white/3 p-6 backdrop-blur-xl flex gap-4 items-start"
+                      >
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-900 border border-white/10 text-xs font-mono font-semibold text-slate-300">
+                          {idx + 1}
+                        </div>
+                        <p className="text-sm leading-relaxed text-slate-300">
+                          {logic}
+                        </p>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+
+                <div className="grid gap-6 md:grid-cols-3">
+                  {/* Card 4: Confidence Level */}
+                  <article className="rounded-2xl border border-white/10 bg-white/3 p-6 backdrop-blur-xl flex flex-col justify-between h-full md:col-span-1">
+                    <div>
+                      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-amber-400">
+                        Confidence Level
+                      </h3>
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-300">
+                        <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                        {varResult.confidenceLevel}
+                      </span>
+                    </div>
+                  </article>
+
+                  {/* Card 5: Common Fan Misunderstanding & Educational Takeaway (Strongest Visual Emphasis) */}
+                  <article className="rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-6 backdrop-blur-xl md:p-8 relative overflow-hidden md:col-span-2 shadow-lg shadow-emerald-500/5">
+                    <div className="absolute top-0 right-0 -mr-6 -mt-6 h-28 w-28 rounded-full bg-emerald-400/20 blur-2xl pointer-events-none" />
+                    <div className="mb-4 flex items-center gap-2">
+                      <svg className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                      <h3 className="text-sm font-bold tracking-tight text-emerald-300">
+                        Misconception & Takeaway
+                      </h3>
+                    </div>
+
+                    <div className="space-y-4">
+                      {(() => {
+                        const text = varResult.confidenceReason;
+                        const misIdx = text.indexOf("COMMON MISUNDERSTANDING:");
+                        const edIdx = text.indexOf("EDUCATIONAL TAKEAWAY:");
+                        if (misIdx !== -1 && edIdx !== -1) {
+                          const commonText = text.substring(misIdx + "COMMON MISUNDERSTANDING:".length, edIdx).trim();
+                          const edText = text.substring(edIdx + "EDUCATIONAL TAKEAWAY:".length).trim();
+                          return (
+                            <>
+                              <div>
+                                <span className="block text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">
+                                  Common Fan Misunderstanding
+                                </span>
+                                <p className="text-sm leading-relaxed text-emerald-100 font-medium">
+                                  {commonText}
+                                </p>
+                              </div>
+                              <div className="border-t border-emerald-500/20 pt-3">
+                                <span className="block text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">
+                                  Educational Takeaway
+                                </span>
+                                <p className="text-sm leading-relaxed text-emerald-100 font-medium">
+                                  {edText}
+                                </p>
+                              </div>
+                            </>
+                          );
+                        }
+                        return (
+                          <p className="text-sm leading-relaxed text-emerald-100 font-medium">
+                            {text}
+                          </p>
+                        );
+                      })()}
+                    </div>
+                  </article>
+                </div>
               </div>
             )}
           </div>
