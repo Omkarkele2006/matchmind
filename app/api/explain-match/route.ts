@@ -70,13 +70,29 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json(
-      {
-        error: errorMessage,
-      },
-      {
-        status: 500,
-      }
-    );
+    // IBM Granite shared free capacity can occasionally become saturated.
+if (
+  errorMessage.includes("429") ||
+  errorMessage.includes("consumption_limit_reached")
+) {
+  return NextResponse.json(
+    {
+      error:
+        "IBM Granite is currently experiencing high demand. Please try again in a few moments.",
+    },
+    {
+      status: 429,
+    }
+  );
+}
+
+return NextResponse.json(
+  {
+    error: errorMessage,
+  },
+  {
+    status: 500,
+  }
+);
   }
 }
