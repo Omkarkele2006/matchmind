@@ -564,7 +564,7 @@ export default function Page() {
 
           {error && !loading && (
             <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-6 text-rose-200">
-              <p className="font-medium">Analysis failed</p>
+              <p className="font-medium">Unable to process your request</p>
               <p className="mt-1 text-sm text-rose-300/80">{error}</p>
             </div>
           )}
@@ -761,7 +761,7 @@ export default function Page() {
 
             {explainError && !explainLoading && (
               <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-6 text-rose-200">
-                <p className="font-medium">Tactical analysis failed</p>
+                <p className="font-medium">Unable to process your request</p>
                 <p className="mt-1 text-sm text-rose-300/80">{explainError}</p>
               </div>
             )}
