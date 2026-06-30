@@ -50,19 +50,37 @@ export async function POST(
       }
     );
   } catch (error) {
-    console.error(
-      "Detect API error:",
-      error
-    );
+  console.error("Detect API error:", error);
 
+  const errorMessage =
+    error instanceof Error
+      ? error.message
+      : "Failed to analyze question.";
+
+  // IBM Granite sometimes reaches temporary shared capacity limits.
+  // Return a friendly message instead of a generic 500 error.
+  if (
+    errorMessage.includes("429") ||
+    errorMessage.includes("consumption_limit_reached")
+  ) {
     return NextResponse.json(
       {
         error:
-          "Failed to analyze question.",
+          "IBM Granite is currently experiencing high demand. Please try again in a few moments.",
       },
       {
-        status: 500,
+        status: 429,
       }
     );
   }
+
+  return NextResponse.json(
+    {
+      error: "Failed to analyze question.",
+    },
+    {
+      status: 500,
+    }
+  );
+}
 }
